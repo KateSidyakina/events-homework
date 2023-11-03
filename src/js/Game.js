@@ -9,6 +9,7 @@ export default class Game {
     this.gnome = new Gnome();
     this.score = new Score();
     this.missedGnomes = 0;
+    this.currentGnomePosition = -1;
     this.isGameOver = false;
 
     for (let row = 0; row < 4; row++) {
@@ -32,12 +33,21 @@ export default class Game {
     }, 2000);
   }
 
+  getRandomIndex() {
+    let index;
+    do {
+      index = Math.floor(Math.random() * this.tiles.length) + 1;
+    } while (index === this.currentGnomePosition);
+    this.currentGnomePosition = index;
+    return index;
+  }
+
   moveGnome() {
     if (this.isGameOver) {
       return;
     }
 
-    const randomIndex = Math.floor(Math.random() * this.tiles.length);
+    const randomIndex = this.getRandomIndex();
     const randomTile = this.tiles[randomIndex];
 
     this.gnome.moveToTile(randomTile);
